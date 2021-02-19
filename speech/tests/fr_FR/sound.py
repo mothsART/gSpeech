@@ -1,5 +1,6 @@
 import os
 import shutil
+import subprocess
 import tempfile
 from hashlib import md5
 from os.path import dirname, join
@@ -33,7 +34,7 @@ def create_sound(text, file_name):
         join(os.getenv('HOME'), '.cache', 'gSpeech'),
         1
     )
-    os.system(cmds[0])
+    subprocess.call(cmds[0])
 
 
 def md5_sum(path, file_name):

@@ -20,12 +20,8 @@ def get_audio_commands(text, outfile, lang, cache_path, speed):
     text = text.replace("'", '')
     # low the limits to avoid overflow
     if len(text) <= overflow_len:
-        stream = """pico2wave -l %s -w %s '%s'""" % (
-            lang,
-            outfile,
-            effect(text, speed * 100)
-        )
-        cmds.append(stream)
+        cmds.append(['pico2wave', '-l', lang, '-w', outfile, '--',
+                     effect(text, speed * 100)])
         names.append(outfile)
         return names, cmds
     discours = text.split('.')
@@ -39,18 +35,21 @@ def get_audio_commands(text, outfile, lang, cache_path, speed):
         ):
             filename = cache_path + 'speech' + str(idx) + '.wav'
             cmds.append(
-                """pico2wave -l %s -w %s '%s'""" % (
-                    lang, filename, effect(text, speed * 100)
-                )
+                ['pico2wave', '-l', lang, '-w', filename, '--',
+                 effect(text, speed * 100)]
             )
             names.append(filename)
             text = ''
     return names, cmds
 
 
+def shell(cmd):
+    return subprocess.call(cmd)
+
+
 def run_audio_files(names, cmds, outfile='out.wav'):
     if len(cmds) == 1:
-        os.system(cmds[0])
+        subprocess.Popen(cmds[0]).communicate()
         return
     p = subprocess.Popen(
         ['which', 'sox'],
@@ -68,7 +67,10 @@ def run_audio_files(names, cmds, outfile='out.wav'):
     if nproc == 0:
         nproc = 1
     print(path)
-    multiprocessing.Pool(nproc).map(os.system, cmds)
-    os.system('sox %s %s' % (' '.join(names), outfile))
+
+    multiprocessing.Pool(nproc).map(shell, cmds)
+
+    subprocess.Popen(['sox'] + names + [outfile]).communicate()
+
     for _file in names:
         os.remove(_file)
