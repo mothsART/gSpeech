@@ -37,7 +37,7 @@ def get_audio_commands(text, outfile, lang, cache_path, speed):
             # low the limits to avoid overflow
             or len(text) + len(discours[idx + 1]) >= overflow_len
         ):
-            filename = cache_path + 'speech' + str(idx) + '.wav'
+            filename = cache_path + '/speech' + str(idx) + '.wav'
             cmds.append(
                 """pico2wave -l %s -w %s '%s'""" % (
                     lang, filename, effect(text, speed * 100)
