@@ -140,7 +140,6 @@ def main():
             ]
         )
     except getopt.GetoptError:
-        print('hum')
         print(cli_help())
         exit(2)
     input_file = text = lang = ''

@@ -61,13 +61,10 @@ def run_audio_files(names, cmds, outfile='out.wav'):
     # rstrip is used to remove trailing spaces, that cause isfile function to
     # fail even if sox is present
     if not os.path.isfile(path.rstrip()):
-        print(_text_to_long)
         return
     nproc = int(.5 * multiprocessing.cpu_count())
     if nproc == 0:
         nproc = 1
-    print(path)
-
     multiprocessing.Pool(nproc).map(shell, cmds)
 
     subprocess.Popen(['sox'] + names + [outfile]).communicate()
