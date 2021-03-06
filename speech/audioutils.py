@@ -16,7 +16,6 @@ def get_audio_commands(text, outfile, lang, cache_path, speed):
     cmds = []
     names = []
     # remove parenthesis to avoid bugs with pico2wave command
-    text = text.replace('"', '')
     text = text.replace("'", '')
     # low the limits to avoid overflow
     if len(text) <= overflow_len:
@@ -61,6 +60,7 @@ def run_audio_files(names, cmds, outfile='out.wav'):
     # rstrip is used to remove trailing spaces, that cause isfile function to
     # fail even if sox is present
     if not os.path.isfile(path.rstrip()):
+        print(_text_to_long)
         return
     nproc = int(.5 * multiprocessing.cpu_count())
     if nproc == 0:

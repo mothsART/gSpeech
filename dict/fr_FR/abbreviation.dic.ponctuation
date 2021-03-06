@@ -17,18 +17,18 @@ stp=s'il te plait
 cdlt=cordialement
 Cdlt=cordialement
 
-Dr=docteur
-dr=docteur
+Dr =Docteur 
+dr =docteur 
 
-M.=monsieur
-m.=monsieur
+M. =Monsieur 
+m. =monsieur 
 
-Mme=Madame
-mme=madame
+Mme =Madame 
+mme =madame 
 
-Pr=professeur
-pr=professeur
+Pr =Professeur 
+pr =professeur 
 
-n.=naissance
-mar.=mariage
-div.=divorce
+n. =naissance 
+mar. =mariage 
+div. =divorce 
