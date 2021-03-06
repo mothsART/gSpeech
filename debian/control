@@ -2,7 +2,11 @@ Source: gspeech
 Section: sound
 Priority: optional
 Maintainer: Jérémie Ferry <jerem.ferry@gmail.com>
-Build-Depends: debhelper (>= 9), python3-dev, python3-setuptools
+Build-Depends:
+    debhelper (>= 9),
+    dh-python,
+    python3-dev,
+    python3-setuptools
 
 Package: gspeech
 Architecture: all
