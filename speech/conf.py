@@ -88,6 +88,7 @@ class Conf:
             self.voice_speed = speed
 
     def __init__(self, script_dir=None):
+        os.makedirs(self.cache_path, exist_ok=True)
         self.pid = join(self.cache_path, 'gspeech.pid')
         self.temp_path = join(self.cache_path, 'speech.wav')
 
