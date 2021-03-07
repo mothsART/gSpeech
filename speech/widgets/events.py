@@ -44,7 +44,7 @@ def on_reload(
     """Reload GUI"""
     myscript = os.path.abspath(sys.argv[0])
     subprocess.Popen(myscript)
-    exit()
+    exit(os.EX_OK)
 
 
 def on_media_dialog(
