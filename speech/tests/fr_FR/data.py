@@ -373,4 +373,12 @@ datas = [
         'ini': """Ce site a des soucis d'IHM.""",
         'new': """ce site a des soucis d'i h m.""",
     },
+    {
+        'ini': 'Oh, un mignon petit hamster et un beau chiot.',
+        'new': 'o, un mignon petit hamstère et un beau chieo.',
+    },
+    {
+        'ini': 'Une mouette, un millepattes et une mouche.',
+        'new': 'une moète, un milpattes et une mou che.',
+    },
 ]

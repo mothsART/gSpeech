@@ -21,7 +21,11 @@ def _replace_acronym(text, line):
     if line.find('=') == -1:
         return text
     good = line.split('=')[1].replace('\n', '')
-    text = text.replace(bad, good)
+    if text.startswith(bad) and text.endswith(bad):
+        text = text.replace(bad, good)
+    if text.startswith(bad):
+        text = text.replace('%s ' % bad, '%s ' % good)
+    text = text.replace(' %s' % bad, ' %s' % good)
     text = text.replace(bad.upper(), good)
     return text.replace(bad.capitalize(), good)
 
