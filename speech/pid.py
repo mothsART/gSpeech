@@ -12,7 +12,7 @@ def kill_if_already_exist(app_name, pid_path):
         try:
             os.kill(int(pid), 0)
         except OSError:
-            pass
+            return
         else:
             print(
                 '** %s is already running\nOtherwise, delete %s' % (
@@ -20,7 +20,6 @@ def kill_if_already_exist(app_name, pid_path):
                 )
             )
             quit()
-    os.makedirs(dirname(pid_path), exist_ok=True)
     with open(pid_path, 'w') as f:
         f.write(str(os.getpid()))
 
