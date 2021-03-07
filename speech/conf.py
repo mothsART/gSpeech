@@ -88,6 +88,7 @@ class Conf:
             self.voice_speed = speed
 
     def __init__(self, script_dir=None):
+        self.create_cache()
         self.pid = join(self.cache_path, 'gspeech.pid')
         self.temp_path = join(self.cache_path, 'speech.wav')
 
@@ -177,6 +178,16 @@ class Conf:
 
         if not isfile(self.path):
             self.update()
+
+    def create_cache(self):
+        if isfile(self.self.cache_path):
+            return
+        try:
+            os.makedirs(dirname(pid_path), exist_ok=True)
+            return
+        except:
+            import tempfile
+            self.cache_path = tempfile.mkdtemp()
 
     def update(self):
         raw = RawConfigParser()
