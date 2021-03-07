@@ -180,12 +180,12 @@ class Conf:
             self.update()
 
     def create_cache(self):
-        if isfile(self.self.cache_path):
+        if isfile(self.cache_path):
             return
         try:
-            os.makedirs(dirname(pid_path), exist_ok=True)
+            os.makedirs(dirname(self.cache_path), exist_ok=True)
             return
-        except:
+        except Exception:
             import tempfile
             self.cache_path = tempfile.mkdtemp()
 
