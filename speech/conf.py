@@ -183,7 +183,7 @@ class Conf:
         if isfile(self.cache_path):
             return
         try:
-            os.makedirs(dirname(self.cache_path), exist_ok=True)
+            os.makedirs(self.cache_path, exist_ok=True)
             return
         except Exception:
             import tempfile
