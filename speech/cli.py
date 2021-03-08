@@ -2,12 +2,9 @@ import getopt
 import os
 import sys
 
-from speech import __version__
-from speech.audioutils import get_audio_commands, run_audio_files
-from speech.conf import Conf
-from speech.textutils import text_to_dict
-
-conf = Conf()
+from . import __version__
+from .api import Player
+from .utils import concat_list
 
 
 class CliOption:
@@ -83,7 +80,7 @@ class CliOptions:
         )
 
 
-def cli_help():
+def cli_help(conf):
     value = (
         '%s version %s' % (conf.app_name, __version__),
         '\nUsage : %s-cli -i "[text to read]" ' % conf.app_name,
@@ -106,19 +103,14 @@ def cli_help():
         str(CliOptions.speed()),
         '\npossible speech values :',
     )
-    for indice, speed in enumerate(conf.list_voice_speed):
-        if indice == 0:
-            value += (' %s' % str(speed),)
-            continue
-        value += (', %s' % str(speed),)
-    return ''.join(value)
+    return ''.join(value) + concat_list(conf.list_voice_speed)
 
 
 def text_file(file_name):
     """Read text file"""
     if not os.path.isfile(file_name):
         print('Error: file not found')
-        exit()
+        exit(os.EX_IOERR)
     with open(file_name, 'r') as f:
         return f.read()
 
@@ -146,16 +138,18 @@ def main():
     debug = False
     speed = 1
     outfile = 'speech.wav'
+    player = Player(debug)
+    conf = player.conf
     if len(opts) == 0:
-        print(cli_help())
-        exit()
+        print(cli_help(conf))
+        exit(os.EX_OK)
     for opt, arg in opts:
         if opt in CliOptions.help_view():
-            print(cli_help())
-            exit()
+            print(cli_help(conf))
+            exit(os.EX_OK)
         if opt in CliOptions.version():
             print('%s version %s' % (conf.app_name, __version__))
-            exit()
+            exit(os.EX_OK)
         if opt in CliOptions.debug():
             debug = True
         if opt in CliOptions.lang():
@@ -169,19 +163,12 @@ def main():
         elif opt in CliOptions.input_text():
             text = arg
     if lang in conf.list_langs:
-        conf.set_lang(lang)
+        player.set_lang(lang)
     if speed in conf.list_voice_speed:
-        conf.set_speed(speed)
+        player.set_speed(speed)
     else:
         speed = conf.voice_speed
     if input_file:
         text = text_file(input_file)
-    text = text_to_dict(text, conf.dict_path, conf.lang, debug)
-    names, cmds = get_audio_commands(
-        text,
-        outfile,
-        conf.lang,
-        conf.cache_path,
-        speed
-    )
-    run_audio_files(names, cmds, outfile)
+    conf.temp_path = outfile
+    player.convert(text, lang, speed)
