@@ -111,19 +111,6 @@ def changed_speed(speed_combobox, conf, menu_voice_speed):
         menu_voice_speed.get_children()[index].set_active(True)
 
 
-def on_message(bus, message, player):
-    """error message on playing function"""
-    t = message.type
-    if t == Gst.MessageType.EOS:
-        # file ended, stop
-        player.set_state(Gst.State.NULL)
-    if t == Gst.MessageType.ERROR:
-        # Error ocurred, print and stop
-        player.set_state(Gst.State.NULL)
-        err, debug = message.parse_error()
-        print('Error: %s' % err, debug)
-
-
 def on_left_click(
     widget,
     conf,
@@ -170,21 +157,9 @@ def on_execute(
     )
     run_audio_files(names, cmds, conf.temp_path)
     if player:
-        player.set_state(Gst.State.NULL)
-    player.set_state(Gst.State.PLAYING)
+        player.stop()
+    player.play()
     button_state(menu_play_pause, win_play_pause, player)
-
-
-def on_player(path):
-    """Element playbin automatic plays any file"""
-    player = Gst.ElementFactory.make('playbin', 'player')
-    # Set the uri to the file
-    player.set_property('uri', 'file://' + path)
-    # Enable message bus to check for errors in the pipeline
-    bus = player.get_bus()
-    bus.add_signal_watch()
-    bus.connect('message', on_message, player)
-    return player
 
 
 def on_play_pause(
@@ -203,9 +178,9 @@ def on_play_pause(
             and not widget.get_active()
         )
     ):
-        player.set_state(Gst.State.PLAYING)
+        player.play()
     else:
-        player.set_state(Gst.State.PAUSED)
+        player.pause()
     button_state(menu_play_pause, win_play_pause, player)
 
 
@@ -217,12 +192,12 @@ def on_stop(
     win_play_pause=None,
     player=None
 ):
-    player.set_state(Gst.State.NULL)
+    player.stop()
     button_state(menu_play_pause, win_play_pause, player)
 
 
 def button_state(menu_play_pause, win_play_pause, player):
-    gst_state = player.get_state(Gst.CLOCK_TIME_NONE)[1]
+    gst_state = player.get_state()
     if gst_state == Gst.State.PLAYING:
         win_play_pause.set_label(Gtk.STOCK_MEDIA_PAUSE)
         menu_play_pause.set_label(_pause)

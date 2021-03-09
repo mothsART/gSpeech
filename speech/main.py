@@ -1,11 +1,10 @@
 import gi
 gi.require_version('Gdk', '3.0')
-gi.require_version('Gst', '1.0')
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gdk, Gst, Gtk
+from gi.repository import Gdk, Gtk
 
 from . import pid
-from .conf import Conf
+from .api import Player
 from .i18n import (
     _languages, _pause, _read_clipboard, _read_selected,
     _tooltip, _voice_speed
@@ -13,16 +12,11 @@ from .i18n import (
 from .widgets import notify
 from .widgets.events import (
     changed_cb, changed_speed, on_execute, on_left_click,
-    on_play_pause, on_player, on_stop
+    on_play_pause, on_stop
 )
 from .widgets.menu import on_right_click
 from .widgets.save import on_save
 
-
-Gst.init('')
-
-# load configuration
-conf = Conf()
 
 try:
     gi.require_version('AppIndicator3', '0.1')
@@ -97,10 +91,10 @@ def voice_speed_box(voice_combobox, hbox, conf, menu_voice_speed):
 
 class MainApp:
     """The main class of the software"""
-    def __init__(self, conf):
+    def __init__(self, player):
+        conf = player.conf
         notify.init(conf)
         window = Gtk.Window(title=conf.app_name, modal=True)
-        player = on_player(conf.temp_path)
         win_play_pause = Gtk.Button(stock=Gtk.STOCK_MEDIA_PAUSE)
 
         # Play item menu
@@ -278,6 +272,8 @@ class MainApp:
 
 
 def main():
-    pid.kill_if_already_exist(conf.app_name, conf.pid)
-    gSpeech = MainApp(conf)
+    player = Player()
+    player.set_ui(True)
+    pid.kill_if_already_exist(player.conf.app_name, player.conf.pid)
+    gSpeech = MainApp(player)
     gSpeech.main()

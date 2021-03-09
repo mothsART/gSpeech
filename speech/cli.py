@@ -1,6 +1,7 @@
 import getopt
 import os
 import sys
+from os.path import basename, dirname, isdir, isfile, join
 
 from . import __version__
 from .api import Player
@@ -73,6 +74,13 @@ class CliOptions:
         )
 
     @staticmethod
+    def read():
+        return CliOption(
+            '-r', '--read',
+            '                   read text\n'
+        )
+
+    @staticmethod
     def debug():
         return CliOption(
             '-d', '--debug',
@@ -92,6 +100,7 @@ def cli_help(conf):
         str(CliOptions.input_text()),
         str(CliOptions.input_file()),
         str(CliOptions.output_file()),
+        str(CliOptions.read()),
         str(CliOptions.debug()),
         str(CliOptions.lang()),
         '\npossible languages :',
@@ -106,40 +115,62 @@ def cli_help(conf):
     return ''.join(value) + concat_list(conf.list_voice_speed)
 
 
-def text_file(file_name):
-    """Read text file"""
-    if not os.path.isfile(file_name):
+def read_input_file(file_name):
+    """Read input file"""
+    if not isfile(file_name):
         print('Error: file not found')
         exit(os.EX_IOERR)
     with open(file_name, 'r') as f:
         return f.read()
 
 
+def get_output_file(outfile):
+    _filename = basename(outfile)
+    if not _filename.endswith('.wav'):
+        print(
+            """Error: the audio output file hasn't a .wav extension"""
+        )
+        exit(os.EX_DATAERR)
+    if _filename == outfile:
+        return join(os.getcwd(), outfile)
+    _dirname = dirname(outfile)
+    if isdir(_dirname):
+        return outfile
+    try:
+        os.makedirs(_dirname, exist_ok=True)
+    except Exception:
+        print(
+            """Error: can't create %s directory' % _dirname"""
+        )
+    return outfile
+
+
 def main():
+    read = False
+    input_file = text = lang = ''
+    speed = 1
+    outfile = join(os.getcwd(), 'speech.wav')
+    player = Player()
+    conf = player.conf
     try:
         opts, args = getopt.getopt(
             sys.argv[1:],
-            'hvi:f:l:s:o:d',
+            'hvi:f:l:s:o:r:d',
             [
                 'help',
                 'version',
                 'input-text=',
-                'input-file',
+                'input-file=',
                 'lang=',
                 'speed=',
                 'output-file=',
+                'read=',
                 'debug='
             ]
         )
     except getopt.GetoptError:
-        print(cli_help())
+        print(cli_help(conf))
         exit(2)
-    input_file = text = lang = ''
-    debug = False
-    speed = 1
-    outfile = 'speech.wav'
-    player = Player(debug)
-    conf = player.conf
     if len(opts) == 0:
         print(cli_help(conf))
         exit(os.EX_OK)
@@ -150,8 +181,10 @@ def main():
         if opt in CliOptions.version():
             print('%s version %s' % (conf.app_name, __version__))
             exit(os.EX_OK)
+        if opt in CliOptions.read():
+            read = True
         if opt in CliOptions.debug():
-            debug = True
+            player.debug = True
         if opt in CliOptions.lang():
             lang = arg
         elif opt in CliOptions.speed():
@@ -169,6 +202,10 @@ def main():
     else:
         speed = conf.voice_speed
     if input_file:
-        text = text_file(input_file)
-    conf.temp_path = outfile
+        text = read_input_file(input_file)
+    conf.temp_path = get_output_file(outfile)
+
+    if read:
+        player.read(text, lang, speed)
+        return
     player.convert(text, lang, speed)
