@@ -1,3 +1,11 @@
+gspeech (0.12.0) xenial; urgency=medium
+  * feature : create API : other python project can use gSpeech like a lib
+  * feature : read text on cli mode
+  * bugfix : correction on cache path
+  * bugfix : some corrections on french terms, words, abreviation etc.
+
+ -- Jérémie Ferry <jerem.ferry@gmail.com>  Sat, 13 Mars 2021 23:42:10 +0100
+
 gspeech (0.11.0) xenial; urgency=medium
   * feature : read roman numerals
   * feature : support of the thousand most popular French male firstname : https://motperdu.fr/top-1000-des-prenoms-de-garcons
