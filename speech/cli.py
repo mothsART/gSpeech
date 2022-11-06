@@ -49,7 +49,7 @@ class CliOptions:
     def input_file():
         return CliOption(
             '-f', '--input-file',
-            '             file to read (supported only plain txt\n'
+            '             file to read (supported only plain text)\n'
         )
 
     @staticmethod
@@ -170,7 +170,7 @@ def main():
         )
     except getopt.GetoptError:
         print(cli_help(conf))
-        exit(2)
+        exit(os.EX_USAGE)
     if len(opts) == 0:
         print(cli_help(conf))
         exit(os.EX_OK)

@@ -4,7 +4,7 @@ gspeech (0.12.0) xenial; urgency=medium
   * bugfix : correction on cache path
   * bugfix : some corrections on french terms, words, abreviation etc.
 
- -- Jérémie Ferry <jerem.ferry@gmail.com>  Sat, 13 Mars 2021 23:42:10 +0100
+ -- Jérémie Ferry <jerem.ferry@gmail.com>  Sat, 13 Mar 2021 23:42:10 +0100
 
 gspeech (0.11.0) xenial; urgency=medium
   * feature : read roman numerals

@@ -13,3 +13,5 @@ icons/*.svg                                     usr/share/icons/hicolor/scalable
 locale/*                                        usr/share/locale
 
 gspeech.desktop                                 usr/share/applications
+
+debian/gspeech-cli-generic.conf                 etc/speech-dispatcher/modules
