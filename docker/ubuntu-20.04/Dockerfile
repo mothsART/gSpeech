@@ -3,6 +3,7 @@ RUN apt-get update
 
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository ppa:jerem-ferry/tts
+RUN apt-get update
 
 RUN apt-get -y install gspeech
 
