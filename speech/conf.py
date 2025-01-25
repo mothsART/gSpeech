@@ -1,6 +1,6 @@
 import os
 import sys
-from configparser import RawConfigParser, SafeConfigParser
+from configparser import RawConfigParser, ConfigParser
 from os.path import dirname, expanduser, isfile, join
 
 import gi
@@ -11,7 +11,7 @@ from .i18n import _comment, _developpers
 
 def ini_read(config_path, section, key, default):
     if isfile(config_path):
-        parser = SafeConfigParser()
+        parser = ConfigParser()
         parser.read(config_path)
         try:
             _property = parser.get(section, key)
