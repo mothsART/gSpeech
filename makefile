@@ -32,7 +32,7 @@ docker.run.ubuntu-20.04:
 	docker run -i -t gspeech/ubuntu-20.04 /bin/bash
 
 build.debian:
-	debuild #binary package : .deb, alias of dpkg-buildpackage -rfakeroot -d -us -uc
+	debuild -us -uc #binary package : .deb, alias of dpkg-buildpackage -rfakeroot -d -us -uc
 
 build.debian.source:
 	debuild -S #source package : alias of dpkg-buildpackage -rfakeroot -d -us -uc -S
