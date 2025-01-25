@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased : 1.0]
 
+https://github.com/coqui-ai/TTS
+https://github.com/myshell-ai/OpenVoice
+https://github.com/daniilrobnikov/vits2
+
 ### Added
 - GTK unit tests
 - support of the two hundred most popular french lastname https://fr.wikipedia.org/wiki/Liste_des_noms_de_famille_les_plus_courants_en_France
