@@ -1,3 +1,9 @@
+gspeech (0.13.0) xenial; urgency=medium
+  * bugfix on last Python 3.12 : SafeConfigParser must be replace by ConfigParser
+  *some corrections on debian archiv creation
+
+ -- jferry <jerem.ferry@gmail.com>  Sat, 25 Jan 2025 13:38:10 +0100
+
 gspeech (0.12.0) xenial; urgency=medium
   * feature : create API : other python project can use gSpeech like a lib
   * feature : read text on cli mode
