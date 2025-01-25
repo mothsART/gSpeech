@@ -16,6 +16,16 @@ https://github.com/daniilrobnikov/vits2
 - support of the two hundred most popular french lastname https://fr.wikipedia.org/wiki/Liste_des_noms_de_famille_les_plus_courants_en_France
 - support most popular history names : https://www.histoire-pour-tous.fr/biographies.html
 
+## [0.13.0]
+    - bugfix on last Python 3.12 : SafeConfigParser must be replace by ConfigParser
+    - some corrections on debian archiv creation
+
+## [0.12.0]
+    - feature : create API : other python project can use gSpeech like a lib
+    - feature : read text on cli mode
+    - bugfix : correction on cache path
+    - bugfix : some corrections on french terms, words, abreviation etc.
+
 ## [0.11.0]
 
 ### Added
